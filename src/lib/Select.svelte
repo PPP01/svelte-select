@@ -76,6 +76,8 @@
     export let hoverItemIndex = 0;
     export let floatingConfig = {};
 
+    export let keepListOpen = false;
+
     export { containerClasses as class };
 
     let containerClasses = '';
@@ -360,6 +362,11 @@
             });
         }
 
+        if (keepListOpen) {
+            listOpen = true;
+            handleFocus();
+        }
+
         dispatch('clear', itemToRemove);
     }
 
@@ -480,6 +487,7 @@
         dispatch('clear', value);
         value = undefined;
         closeList();
+        dispatch('clear', value);
         handleFocus();
     }
 
@@ -509,7 +517,9 @@
         if (clearFilterTextOnBlur) {
             filterText = '';
         }
-        listOpen = false;
+        if (!keepListOpen) {
+            listOpen = false;
+        }
     }
 
     export let ariaValues = (values) => {
