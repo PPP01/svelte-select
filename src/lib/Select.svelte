@@ -102,6 +102,8 @@
     export let listOffset = 5;
     export let suggestions = null;
 
+    export let keepListOpenDebug = false;
+
     export { containerClasses as class };
 
     function addCreatableItem(_items, _filterText) {
@@ -531,7 +533,9 @@
 
     function closeList() {
         filterText = '';
-        listOpen = false;
+        if (!keepListOpenDebug) {
+            listOpen = false;
+        }
     }
 
     export let ariaValues = (values) => {
