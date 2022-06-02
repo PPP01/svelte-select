@@ -249,6 +249,7 @@
     $: if (!value && isMulti && prev_value) dispatch('change', value);
     $: if (isFocused !== prev_isFocused) setupFocus();
     $: if (filterText !== prev_filterText) setupFilterText();
+    $: if (keepListOpenDebug === true && listOpen === false) listOpen = true;
 
     function setupFilterText() {
         if (filterText.length === 0) return;
@@ -533,9 +534,7 @@
 
     function closeList() {
         filterText = '';
-        if (!keepListOpenDebug) {
-            listOpen = false;
-        }
+        listOpen = false;
     }
 
     export let ariaValues = (values) => {
