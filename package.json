@@ -66,8 +66,8 @@
   "type": "module",
   "exports": {
     ".": {
-      "svelte": "./index.js",
-      "types": "./index.d.ts"
+      "svelte": "./package/index.js",
+      "types": "./package/index.d.ts"
     }
   },
   "dependencies": {
