@@ -3,6 +3,7 @@
   "version": "5.8.3",
   "repository": "https://rob-balfre@github.com/rob-balfre/svelte-select.git",
   "description": "A <Select> component for Svelte apps",
+  "main": "package/index.js",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
@@ -13,7 +14,7 @@
     "gen:docs": "node docs/generate_theming_variables_md.cjs",
     "preprepare": "node src/remove-styles.cjs",
     "prepare": "svelte-package",
-    "postprepare": "node src/post-prepare.cjs && npm run gen:docs && npm run build",
+    "postprepare": "node src/post-prepare.cjs && npm run gen:docs",
     "release": "release-it"
   },
   "devDependencies": {
