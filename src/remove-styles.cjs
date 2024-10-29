@@ -7,7 +7,7 @@ const SOURCE_FOLDER = path.join(__dirname, 'lib');
 
 (async () => {
     const searchResults = await find(USAGE_PATTERN, SOURCE_FOLDER, '.svelte$');
-    let promises = [mkdir(path.join(__dirname, '/lib/no-styles'), { recursive: true })];
+    let promises = [await mkdir(path.join(__dirname, '/lib/no-styles'), { recursive: true })];
 
     Object.keys(searchResults).forEach((key) => {
         let fileName = key.split('/').pop();
