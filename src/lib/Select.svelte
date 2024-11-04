@@ -311,7 +311,7 @@
     $: if (filterText) hoverItemIndex = 0;
 
     function handleFilterEvent(items) {
-        if (listOpen) dispatch('filter', items);
+        if (listOpen && filterText.length > 0) dispatch('filter', items);
     }
 
     beforeUpdate(async () => {
