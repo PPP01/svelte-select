@@ -78,6 +78,8 @@
 
     export { containerClasses as class };
 
+    export let filterSortBy = null;
+
     let containerClasses = '';
     let activeValue;
     let prev_value;
@@ -281,11 +283,12 @@
         value,
         itemId,
         groupBy,
-        label,
         filterSelectedItems,
         itemFilter,
         convertStringItemsToObjects,
+        filterSortBy,
         filterGroupedItems,
+        label,
     });
     $: if (listOpen && filteredItems && !multiple && !value) checkHoverSelectable();
     $: handleFilterEvent(filteredItems);

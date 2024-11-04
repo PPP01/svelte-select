@@ -9,6 +9,7 @@ export default function filter({
     filterSelectedItems,
     itemFilter,
     convertStringItemsToObjects,
+    filterSortBy,
     filterGroupedItems,
     label,
 }) {
@@ -29,6 +30,11 @@ export default function filter({
 
         return matchesFilter;
     });
+
+
+    if (typeof filterSortBy === 'function') {
+        filterResults = filterSortBy(filterResults, filterText);
+    }
 
     if (groupBy) {
         filterResults = filterGroupedItems(filterResults);
