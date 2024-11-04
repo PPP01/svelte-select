@@ -80,6 +80,15 @@
 
     export let filterSortBy = null;
 
+    export let stepsPageup = 8;
+    export let stepsPagedown = 8;
+
+    export let closeListOnTab = false;
+
+
+    $: _stepsPageup = parseInt(stepsPageup, 10);
+    $: _stepsPagedown = parseInt(stepsPagedown, 10);
+
     let containerClasses = '';
     let activeValue;
     let prev_value;
@@ -412,7 +421,38 @@
                 }
 
                 break;
+            case 'PageDown':
+                e.preventDefault();
+                if (listOpen) {
+                    setHoverIndex(_stepsPagedown);
+                } else {
+                    listOpen = true;
+                    activeValue = undefined;
+                }
+                break;
+            case 'PageUp':
+                e.preventDefault();
+                if (listOpen) {
+                    setHoverIndex(_stepsPageup * -1);
+                } else {
+                    listOpen = true;
+                    activeValue = undefined;
+                }
+                break;
+            case 'End':
+                e.preventDefault();
+                if (listOpen) {
+                    items.length && setHoverIndex('end');
+                }
+                break;
+            case 'Home':
+                e.preventDefault();
+                if (listOpen) {
+                    items.length && setHoverIndex('start');
+                }
+                break;
             case 'Tab':
+                closeListOnTab && closeList();
                 if (listOpen && focused) {
                     if (
                         filteredItems.length === 0 ||
@@ -427,6 +467,7 @@
 
                 break;
             case 'Backspace':
+            case 'Delete':
                 if (!multiple || filterText.length > 0) return;
 
                 if (multiple && value && value.length > 0) {
@@ -601,11 +642,30 @@
             return (hoverItemIndex = 0);
         }
 
-        if (increment > 0 && hoverItemIndex === filteredItems.length - 1) {
+        // If increment is a string and is either 'end' or 'start', jump to the last or first item
+        if (increment === 'end') {
+            hoverItemIndex = items.length - 1;
+        } else if (increment === 'start') {
             hoverItemIndex = 0;
-        } else if (increment < 0 && hoverItemIndex === 0) {
+        } else if (increment > 0 && hoverItemIndex + increment === filteredItems.length - 1 + increment) {
+            // If incrementing the last item's index,
+            // reset hoverItemIndex to the first item (index 0)
+            hoverItemIndex = 0;
+        } else if (increment > 0 && hoverItemIndex + increment > filteredItems.length - 1) {
+            // If incrementing and the new index exceeds the last item's index,
+            // set hoverItemIndex to the last item in the list
             hoverItemIndex = filteredItems.length - 1;
+        } else if (increment < 0 && hoverItemIndex + increment === 0 + increment) {
+            // If decrementing the first item's index,
+            // set hoverItemIndex to the last item in the list
+            hoverItemIndex = filteredItems.length - 1;
+        } else if (increment < 0 && hoverItemIndex + increment <= 0) {
+            // If decrementing and the new index is less than or equal to the first item's index,
+            // reset hoverItemIndex to the first item (index 0)
+            hoverItemIndex = 0;
         } else {
+            // If none of the above conditions are met,
+            // simply update hoverItemIndex by adding the increment
             hoverItemIndex = hoverItemIndex + increment;
         }
 
