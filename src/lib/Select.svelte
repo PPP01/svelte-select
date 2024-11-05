@@ -106,6 +106,7 @@
         };
     };
 
+    export let createItemFromValue = null;
     /**
      * Minimum characters required to create a new item.
      * @type {number}
@@ -167,6 +168,24 @@
     } else if(typeof messagesOverwrite === 'function') {
         messages = messagesOverwrite(messages);
     }
+
+    function resetCreateItemFromValue() {
+        createItemFromValue = null;
+    }
+
+    $: ((createItemFromValue) => {
+        if (createItemFromValue === null) return;
+        (Array.isArray(createItemFromValue) ? createItemFromValue : [createItemFromValue]).forEach(value => {
+            const temp = addCreatableItem(items, value);
+            const created = temp.filter(item => item.created === true);
+            if (created.length > 0) {
+                itemSelected(created[0]);
+            }
+        });
+
+        resetCreateItemFromValue();
+    })(createItemFromValue);
+
 
     $: _stepsPageup = parseInt(stepsPageup, 10);
     $: _stepsPagedown = parseInt(stepsPagedown, 10);
