@@ -182,7 +182,8 @@
 
             // if not, check if the value is in the list
             if (selected === undefined)  {
-                selected = items.find(item => item[label] === value);
+
+                selected = items.find(item => item[label].toLowerCase().trim() === value.toLowerCase().trim());
             }
             if (selected) {
                 itemSelected(selected);
