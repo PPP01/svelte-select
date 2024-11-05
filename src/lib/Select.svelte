@@ -128,7 +128,7 @@
         if (maxNewCreatableItems && items.filter((item) => item.new).length >= maxNewCreatableItems) return _items;
         const itemToCreate = createItem(_filterText);
         if (_items[0] && _filterText === _items[0][label]) return _items;
-        if (items.find((item) => item[itemId] === itemToCreate[itemId])) return _items;
+        if (items.find((item) => item[itemId].toLowerCase().trim() === itemToCreate[itemId].toLowerCase().trim())) return _items;
         itemToCreate.created = true;
         itemToCreate.new = true;
         return [..._items, itemToCreate];
