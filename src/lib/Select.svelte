@@ -177,9 +177,15 @@
         if (createItemFromValue === null) return;
         (Array.isArray(createItemFromValue) ? createItemFromValue : [createItemFromValue]).forEach(value => {
             const temp = addCreatableItem(items, value);
-            const created = temp.filter(item => item.created === true);
-            if (created.length > 0) {
-                itemSelected(created[0]);
+            // first check if there is a new created item
+            let selected = temp.find(item => item.created === true);
+
+            // if not, check if the value is in the list
+            if (selected === undefined)  {
+                selected = items.find(item => item[label] === value);
+            }
+            if (selected) {
+                itemSelected(selected);
             }
         });
 

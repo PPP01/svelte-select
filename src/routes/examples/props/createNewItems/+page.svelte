@@ -2,9 +2,9 @@
     import Select from '$lib/Select.svelte';
 
     let items = [
-        { value: 'one', label: 'One' },
-        { value: 'two', label: 'Two' },
-        { value: 'three', label: 'Three' },
+        { value: 'One', label: 'One' },
+        { value: 'Two', label: 'Two' },
+        { value: 'Three', label: 'Three' },
     ];
 
     let createItemFromValue = null;
@@ -29,6 +29,13 @@
         createItemFromValue = Array.from({ length: 10 }, () => getRandomString());
     }
 
+    function handleChooseExistingItem()
+    {
+        const randomIndex = Math.floor(Math.random() * items.length);
+        // Select the item at the random index
+        createItemFromValue = items[randomIndex].label;
+    }
+
 
 </script>
 
@@ -39,5 +46,6 @@
 <Select {items} createNewItems={true} multiple {createItemFromValue} />
 <button on:click={handleCreateItemFromValue}>Create new item</button>
 <button on:click={genManyItems}>Create many item</button>
+<button on:click={handleChooseExistingItem}>Choose existing Item</button>
 <br />
 <Select {items} createNewItems={false} multiple />
