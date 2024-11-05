@@ -177,21 +177,6 @@
     let prev_filterText;
     let prev_multiple;
 
-    function itemCreated(newItem)
-    {
-        delete newItem.created;
-        if (multiple) {
-            value = value || [];
-            value = [...value, newItem];
-        } else {
-            value = newItem;
-        }
-        dispatch('itemCreated', filterText);
-
-        filterText = '';
-        activeValue = undefined;
-    }
-
     function setValue() {
         if (typeof value === 'string') {
             let item = (items || []).find((item) => item[itemId] === value);
