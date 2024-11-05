@@ -89,7 +89,7 @@
     export let messages = {
         'noOptions': 'No options available',
         'maxNewItems': 'Maximum number of new items reached',
-        'addNewItemLabel': 'Add new item: ',
+        'listItemAddNewLabel': 'Add new item: ',
     }
 
     /**
@@ -132,6 +132,32 @@
         return [..._items, itemToCreate];
     }
 
+    export let cssClassesOverwrite = null;
+
+    let cssClasses = {
+        base: 'svelte-select',
+        input: 'svelte-select-input',
+        list: 'svelte-select-list',
+        listItemContainer: 'list-item',
+        listItemItem: 'item',
+        listItemAddNewLabel: 'item-new-label',
+        listItemMaxNewItems: 'empty max-new-items',
+        listItemNoOptions: 'empty',
+        a11yText: 'a11y-text',
+        valueContainer: 'value-container',
+        valueContainerMultiItem: 'multi-item',
+        valueContainerMultiItemText: 'multi-item-text',
+        valueContainerMultiItemClear: 'multi-item-clear',
+        valueContainerSelectedItem: 'selected-item',
+        indicators: 'indicators',
+        indicatorsIconLoading: 'icon loading',
+        indicatorsIconClear: 'icon clear-select',
+        indicatorsIconChevron: 'icon chevron',
+    };
+
+    $: if (typeof cssClassesOverwrite === 'object') {
+        cssClasses = Object.assign(cssClasses, cssClassesOverwrite);
+    }
 
     $: _stepsPageup = parseInt(stepsPageup, 10);
     $: _stepsPagedown = parseInt(stepsPagedown, 10);
@@ -808,7 +834,7 @@
 <svelte:window on:click={handleClickOutside} on:keydown={handleKeyDown} />
 
 <div
-    class="svelte-select {containerClasses}"
+    class="{cssClasses?.base || 'svelte-select'} {containerClasses}"
     class:multi={multiple}
     class:disabled
     class:focused
@@ -824,7 +850,7 @@
         <div
             use:floatingContent
             bind:this={list}
-            class="svelte-select-list"
+            class="{cssClasses?.list || 'svelte-select-list'}"
             class:prefloat
             on:scroll={handleListScroll}
             on:pointerup|preventDefault|stopPropagation
@@ -839,13 +865,13 @@
                         on:focus={() => handleHover(i)}
                         on:click|stopPropagation={() => handleItemClick({ item, i })}
                         on:keydown|preventDefault|stopPropagation
-                        class="list-item"
+                        class="{cssClasses?.listItemContainer || 'list-item'}"
                         tabindex="-1"
                         role="none">
                         <div
                             use:activeScroll={{ scroll: isItemActive(item, value, itemId), listDom }}
                             use:hoverScroll={{ scroll: scrollToHoverItem === i, listDom }}
-                            class="item"
+                            class="{cssClasses?.listItemItem || 'item'}"
                             class:list-group-title={item.groupHeader}
                             class:active={isItemActive(item, value, itemId)}
                             class:first={isItemFirst(i)}
@@ -854,7 +880,7 @@
                             class:not-selectable={item?.selectable === false}>
                             <slot name="item" {item} index={i}>
                                 {#if createNewItems && item?.created}
-                                    <span class="item-new-label">{messages?.addNewItemLabel || 'New: '}</span>
+                                    <span class="{cssClasses?.listItemAddNewLabel || 'item-new-label'}">{messages?.listItemAddNewLabel || 'New: '}</span>
                                 {/if}
                                 {item?.[label]}
                             </slot>
@@ -864,9 +890,9 @@
             {:else if !hideEmptyState}
                 <slot name="empty">
                     {#if (maxNewCreatableItems && items.filter((item) => item.new).length >= maxNewCreatableItems)}
-                        <div class="empty">{messages?.maxNewItems || 'Max new items reached'}</div>
+                        <div class="{cssClasses?.listItemMaxNewItems || 'empty'}">{messages?.maxNewItems || 'Max new items reached'}</div>
                     {:else}
-                        <div class="empty">{messages?.noOptions || 'No options'}</div>
+                        <div class="{cssClasses?.listItemNoOptions || 'empty'}">{messages?.noOptions || 'No options'}</div>
                     {/if}
 
                 </slot>
@@ -875,7 +901,7 @@
         </div>
     {/if}
 
-    <span aria-live="polite" aria-atomic="false" aria-relevant="additions text" class="a11y-text">
+    <span aria-live="polite" aria-atomic="false" aria-relevant="additions text" class="{cssClasses?.a11yText || 'a11y-text'}">
         {#if focused}
             <span id="aria-selection">{ariaSelection}</span>
             <span id="aria-context">
@@ -888,18 +914,18 @@
         <slot name="prepend" />
     </div>
 
-    <div class="value-container">
+    <div class="{cssClasses?.valueContainer || 'value-container'}">
         {#if hasValue}
             {#if multiple}
                 {#each value as item, i}
                     <div
-                        class="multi-item"
+                        class="{cssClasses?.valueContainerMultiItem || 'multi-item'}"
                         class:active={activeValue === i}
                         class:disabled
                         on:click|preventDefault={() => (multiFullItemClearable ? handleMultiItemClear(i) : {})}
                         on:keydown|preventDefault|stopPropagation
                         role="none">
-                        <span class="multi-item-text">
+                        <span class="{cssClasses?.valueContainerMultiItemText || 'multi-item-text'}">
                             <slot name="selection" selection={item} index={i}>
                                 {item[label]}
                             </slot>
@@ -907,7 +933,7 @@
 
                         {#if !disabled && !multiFullItemClearable && ClearIcon}
                             <div
-                                class="multi-item-clear"
+                                class="{cssClasses?.valueContainerMultiItemClear || 'multi-item-clear'}"
                                 on:pointerup|preventDefault|stopPropagation={() => handleMultiItemClear(i)}>
                                 <slot name="multi-clear-icon">
                                     <ClearIcon />
@@ -917,7 +943,7 @@
                     </div>
                 {/each}
             {:else}
-                <div class="selected-item" class:hide-selected-item={hideSelectedItem}>
+                <div class="{cssClasses?.valueContainerSelectedItem || 'selected-item'}" class:hide-selected-item={hideSelectedItem}>
                     <slot name="selection" selection={value}>
                         {value[label]}
                     </slot>
@@ -938,9 +964,9 @@
             {disabled} />
     </div>
 
-    <div class="indicators">
+    <div class="{cssClasses?.indicators || 'indicators'}">
         {#if loading}
-            <div class="icon loading" aria-hidden="true">
+            <div class="{cssClasses?.indicatorsIconLoading || 'icon loading'}" aria-hidden="true">
                 <slot name="loading-icon">
                     <LoadingIcon />
                 </slot>
@@ -948,7 +974,7 @@
         {/if}
 
         {#if showClear}
-            <button type="button" class="icon clear-select" on:click={handleClear}>
+            <button type="button" class="{cssClasses?.indicatorsIconClear || 'icon clear-icon'}" on:click={handleClear}>
                 <slot name="clear-icon">
                     <ClearIcon />
                 </slot>
@@ -956,7 +982,7 @@
         {/if}
 
         {#if showChevron}
-            <div class="icon chevron" aria-hidden="true">
+            <div class="{cssClasses?.indicatorsIconChevron || 'icon clear-icon'}" aria-hidden="true">
                 <slot name="chevron-icon" {listOpen}>
                     <ChevronIcon />
                 </slot>
