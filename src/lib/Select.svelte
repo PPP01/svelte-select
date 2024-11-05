@@ -85,8 +85,9 @@
 
     export let closeListOnTab = false;
 
+    export let messagesOverwrite = null;
 
-    export let messages = {
+    let messages = {
         'noOptions': 'No options available',
         'maxNewItems': 'Maximum number of new items reached',
         'listItemAddNewLabel': 'Add new item: ',
@@ -157,6 +158,14 @@
 
     $: if (typeof cssClassesOverwrite === 'object') {
         cssClasses = Object.assign(cssClasses, cssClassesOverwrite);
+    } else if(typeof cssClassesOverwrite === 'function') {
+        cssClasses = cssClassesOverwrite(cssClasses);
+    }
+
+    $: if (typeof messagesOverwrite === 'object') {
+        messages = Object.assign(messages, messagesOverwrite);
+    } else if(typeof messagesOverwrite === 'function') {
+        messages = messagesOverwrite(messages);
     }
 
     $: _stepsPageup = parseInt(stepsPageup, 10);
