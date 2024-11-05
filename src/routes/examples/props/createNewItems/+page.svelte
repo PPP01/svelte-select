@@ -11,3 +11,5 @@
 <Select {items} createNewItems={true} />
 <br />
 <Select {items} createNewItems={true} multiple />
+<br />
+<Select {items} createNewItems={false} multiple />
