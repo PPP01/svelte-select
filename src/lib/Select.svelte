@@ -86,6 +86,53 @@
     export let closeListOnTab = false;
 
 
+    export let messages = {
+        'noOptions': 'No options available',
+        'maxNewItems': 'Maximum number of new items reached',
+        'addNewItemLabel': 'Add new item: ',
+    }
+
+    /**
+     * If true, allows creating new items.
+     * @type {boolean}
+     */
+    export let createNewItems = false;
+
+    export let createItem = (filterText) => {
+        return {
+            value: filterText,
+            label: filterText,
+        };
+    };
+
+    /**
+     * Minimum characters required to create a new item.
+     * @type {number}
+     */
+    export let minCharsCreate = 3;
+
+    /**
+     * if true and if isCreatable is true, a new item will be created automatically
+     * @type {boolean}
+     */
+    export let autoCreateOnBlur = false;
+
+
+    export let maxNewCreatableItems = null;
+
+    export function addCreatableItem(_items, _filterText)
+    {
+        if (_filterText.length < minCharsCreate) return _items;
+        if (maxNewCreatableItems && items.filter((item) => item.new).length >= maxNewCreatableItems) return _items;
+        const itemToCreate = createItem(_filterText);
+        if (_items[0] && _filterText === _items[0][label]) return _items;
+        if (items.find((item) => item[itemId] === itemToCreate[itemId])) return _items;
+        itemToCreate.created = true;
+        itemToCreate.new = true;
+        return [..._items, itemToCreate];
+    }
+
+
     $: _stepsPageup = parseInt(stepsPageup, 10);
     $: _stepsPagedown = parseInt(stepsPagedown, 10);
 
@@ -94,6 +141,21 @@
     let prev_value;
     let prev_filterText;
     let prev_multiple;
+
+    function itemCreated(newItem)
+    {
+        delete newItem.created;
+        if (multiple) {
+            value = value || [];
+            value = [...value, newItem];
+        } else {
+            value = newItem;
+        }
+        dispatch('itemCreated', filterText);
+
+        filterText = '';
+        activeValue = undefined;
+    }
 
     function setValue() {
         if (typeof value === 'string') {
@@ -258,6 +320,10 @@
                     focused = true;
                     listOpen = true;
                 }
+
+                if(createNewItems && filterText.length >= minCharsCreate) {
+                    items = addCreatableItem(items, filterText);
+                }
             }, debounceWait);
         } else {
             listOpen = true;
@@ -298,6 +364,8 @@
         filterSortBy,
         filterGroupedItems,
         label,
+        createNewItems,
+        addCreatableItem,
     });
     $: if (listOpen && filteredItems && !multiple && !value) checkHoverSelectable();
     $: handleFilterEvent(filteredItems);
@@ -538,7 +606,13 @@
             const item = Object.assign({}, selection);
 
             if (item.groupHeader && !item.selectable) return;
+            if (item.created) {
+                delete item.created;
+                items.push(item);
+                dispatch('itemCreated', item);
+            }
             value = multiple ? (value ? value.concat([item]) : [item]) : (value = item);
+
 
             setTimeout(() => {
                 if (closeListOnChange) closeList();
@@ -779,6 +853,9 @@
                             class:group-item={item.groupItem}
                             class:not-selectable={item?.selectable === false}>
                             <slot name="item" {item} index={i}>
+                                {#if createNewItems && item?.created}
+                                    <span class="item-new-label">{messages?.addNewItemLabel || 'New: '}</span>
+                                {/if}
                                 {item?.[label]}
                             </slot>
                         </div>
@@ -786,7 +863,12 @@
                 {/each}
             {:else if !hideEmptyState}
                 <slot name="empty">
-                    <div class="empty">No options</div>
+                    {#if (maxNewCreatableItems && items.filter((item) => item.new).length >= maxNewCreatableItems)}
+                        <div class="empty">{messages?.maxNewItems || 'Max new items reached'}</div>
+                    {:else}
+                        <div class="empty">{messages?.noOptions || 'No options'}</div>
+                    {/if}
+
                 </slot>
             {/if}
             {#if $$slots['list-append']}<slot name="list-append" />{/if}

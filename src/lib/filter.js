@@ -12,6 +12,9 @@ export default function filter({
     filterSortBy,
     filterGroupedItems,
     label,
+    createNewItems,
+    addCreatableItem,
+
 }) {
     if (items && loadOptions) return items;
     if (!items) return [];
@@ -38,6 +41,10 @@ export default function filter({
 
     if (groupBy) {
         filterResults = filterGroupedItems(filterResults);
+    }
+
+    if (createNewItems) {
+        filterResults = addCreatableItem(filterResults, filterText);
     }
 
     return filterResults;
