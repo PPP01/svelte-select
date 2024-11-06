@@ -173,18 +173,24 @@
         createItemFromValue = null;
     }
 
+    function getSelection(searchItems,searchText) {
+        let selected = searchItems.find(item => item.created === true);
+
+        // if not, check if the value is in the list
+        if (selected === undefined) {
+
+            selected = items.find(item => item[label].toLowerCase().trim() === searchText.toLowerCase().trim());
+        }
+
+        return selected;
+    }
+
     $: ((createItemFromValue) => {
         if (createItemFromValue === null) return;
         (Array.isArray(createItemFromValue) ? createItemFromValue : [createItemFromValue]).forEach(value => {
             const temp = addCreatableItem(items, value);
             // first check if there is a new created item
-            let selected = temp.find(item => item.created === true);
-
-            // if not, check if the value is in the list
-            if (selected === undefined)  {
-
-                selected = items.find(item => item[label].toLowerCase().trim() === value.toLowerCase().trim());
-            }
+            let selected = getSelection(temp, value);
             if (selected) {
                 itemSelected(selected);
             }
@@ -621,6 +627,13 @@
         if (isScrolling) return;
         if (listOpen || focused) {
             dispatch('blur', e);
+            if (autoCreateOnBlur && createNewItems && filterText.length >= minCharsCreate) {
+                const temp = getFilteredItems();
+                let selected = getSelection(temp, filterText);
+                if (selected) {
+                    itemSelected(selected);
+                }
+            }
             closeList();
             focused = false;
             activeValue = undefined;

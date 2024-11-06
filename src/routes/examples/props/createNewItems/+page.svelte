@@ -36,6 +36,11 @@
         createItemFromValue = items[randomIndex].label;
     }
 
+    function handleChooseOne()
+    {
+        createItemFromValue = 'one';
+    }
+
 
 </script>
 
@@ -43,9 +48,12 @@
 <br />
 <Select {items} createNewItems={true} multiple />
 <br />
-<Select {items} createNewItems={true} multiple {createItemFromValue} />
+<Select {items} createNewItems={true} multiple bind:createItemFromValue={createItemFromValue} />
 <button on:click={handleCreateItemFromValue}>Create new item</button>
 <button on:click={genManyItems}>Create many item</button>
 <button on:click={handleChooseExistingItem}>Choose existing Item</button>
+<button on:click={handleChooseOne}>Choose one</button>
+<br />
+<Select {items} createNewItems={true} multiple autoCreateOnBlur={true} />
 <br />
 <Select {items} createNewItems={false} multiple />
