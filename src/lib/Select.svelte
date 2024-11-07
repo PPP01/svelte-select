@@ -1034,7 +1034,7 @@
     {/if}
 </div>
 
-<style>
+<style lang="scss" global>
     .svelte-select {
         /* deprecating camelCase custom props in favour of kebab-case for v5 */
         --borderRadius: var(--border-radius);
@@ -1109,316 +1109,318 @@
         display: flex;
         align-items: stretch;
         padding: var(--padding, var(--internal-padding));
-        background: var(--background, #fff);
+        background: var(--background, #ffffff);
         margin: var(--margin, 0);
         width: var(--width, 100%);
         font-size: var(--font-size, 16px);
         max-height: var(--max-height);
-    }
 
-    * {
-        box-sizing: var(--box-sizing, border-box);
-    }
+        &:not(.multi) > .value-container > input {
+            width: 100%;
+            height: 100%;
+        }
 
-    .svelte-select:hover {
-        border: var(--border-hover, 1px solid #b2b8bf);
-    }
+        &:hover {
+            border: var(--border-hover, 1px solid #b2b8bf);
+        }
 
-    .value-container {
-        display: flex;
-        flex: 1 1 0%;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 5px 10px;
-        padding: var(--value-container-padding, 5px 0);
-        position: relative;
-        overflow: var(--value-container-overflow, hidden);
-        align-self: stretch;
-    }
+        &.focused {
+            border: var(--border-focused, 1px solid #006fe8);
+            border-radius: var(--border-radius-focused, var(--border-radius, 6px));
+        }
 
-    .prepend,
-    .indicators {
-        display: flex;
-        flex-shrink: 0;
-        align-items: center;
-    }
+        * {
+            box-sizing: var(--box-sizing, border-box);
+        }
 
-    .indicators {
-        position: var(--indicators-position);
-        top: var(--indicators-top);
-        right: var(--indicators-right);
-        bottom: var(--indicators-bottom);
-    }
+        .value-container {
+            display: flex;
+            flex: 1 1 0%;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 5px 10px;
+            padding: var(--value-container-padding, 5px 0);
+            position: relative;
+            overflow: var(--value-container-overflow, hidden);
+            align-self: stretch;
+        }
 
-    input {
-        position: absolute;
-        cursor: default;
-        border: none;
-        color: var(--input-color, var(--item-color));
-        padding: var(--input-padding, 0);
-        letter-spacing: var(--input-letter-spacing, inherit);
-        margin: var(--input-margin, 0);
-        min-width: 10px;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background: transparent;
-        font-size: var(--font-size, 16px);
-    }
+        .prepend,
+        .indicators {
+            display: flex;
+            flex-shrink: 0;
+            align-items: center;
+        }
 
-    :not(.multi) > .value-container > input {
-        width: 100%;
-        height: 100%;
-    }
+        .indicators {
+            position: var(--indicators-position);
+            top: var(--indicators-top);
+            right: var(--indicators-right);
+            bottom: var(--indicators-bottom);
+        }
 
-    input::placeholder {
-        color: var(--placeholder-color, #78848f);
-        opacity: var(--placeholder-opacity, 1);
-    }
+        input {
+            position: absolute;
+            cursor: default;
+            border: none;
+            color: var(--input-color, var(--item-color));
+            padding: var(--input-padding, 0);
+            letter-spacing: var(--input-letter-spacing, inherit);
+            margin: var(--input-margin, 0);
+            min-width: 10px;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: transparent;
+            font-size: var(--font-size, 16px);
+        }
 
-    input:focus {
-        outline: none;
-    }
+        input::placeholder {
+            color: var(--placeholder-color, #78848f);
+            opacity: var(--placeholder-opacity, 1);
+        }
 
-    .svelte-select.focused {
-        border: var(--border-focused, 1px solid #006fe8);
-        border-radius: var(--border-radius-focused, var(--border-radius, 6px));
-    }
+        input:focus {
+            outline: none;
+        }
 
-    .disabled {
-        background: var(--disabled-background, #ebedef);
-        border-color: var(--disabled-border-color, #ebedef);
-        color: var(--disabled-color, #c1c6cc);
-    }
 
-    .disabled input::placeholder {
-        color: var(--disabled-placeholder-color, #c1c6cc);
-        opacity: var(--disabled-placeholder-opacity, 1);
-    }
 
-    .selected-item {
-        position: relative;
-        overflow: var(--selected-item-overflow, hidden);
-        padding: var(--selected-item-padding, 0 20px 0 0);
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: var(--selected-item-color, inherit);
-        font-size: var(--font-size, 16px);
-    }
+        .disabled {
+            background: var(--disabled-background, #ebedef);
+            border-color: var(--disabled-border-color, #ebedef);
+            color: var(--disabled-color, #c1c6cc);
+        }
 
-    .multi .selected-item {
-        position: absolute;
-        line-height: var(--height, 42px);
-        height: var(--height, 42px);
-    }
+        .disabled input::placeholder {
+            color: var(--disabled-placeholder-color, #c1c6cc);
+            opacity: var(--disabled-placeholder-opacity, 1);
+        }
 
-    .selected-item:focus {
-        outline: none;
-    }
+        .selected-item {
+            position: relative;
+            overflow: var(--selected-item-overflow, hidden);
+            padding: var(--selected-item-padding, 0 20px 0 0);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--selected-item-color, inherit);
+            font-size: var(--font-size, 16px);
+        }
 
-    .hide-selected-item {
-        opacity: 0;
-    }
+        .multi .selected-item {
+            position: absolute;
+            line-height: var(--height, 42px);
+            height: var(--height, 42px);
+        }
 
-    .icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        .selected-item:focus {
+            outline: none;
+        }
 
-    .clear-select {
-        all: unset;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: var(--clear-select-width, 40px);
-        height: var(--clear-select-height, 100%);
-        color: var(--clear-select-color, var(--icons-color));
-        margin: var(--clear-select-margin, 0);
-        pointer-events: all;
-        flex-shrink: 0;
-    }
+        .hide-selected-item {
+            opacity: 0;
+        }
 
-    .clear-select:focus {
-        outline: var(--clear-select-focus-outline, 1px solid #006fe8);
-    }
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .loading {
-        width: var(--loading-width, 40px);
-        height: var(--loading-height);
-        color: var(--loading-color, var(--icons-color));
-        margin: var(--loading--margin, 0);
-        flex-shrink: 0;
-    }
+        .clear-select {
+            all: unset;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--clear-select-width, 40px);
+            height: var(--clear-select-height, 100%);
+            color: var(--clear-select-color, var(--icons-color));
+            margin: var(--clear-select-margin, 0);
+            pointer-events: all;
+            flex-shrink: 0;
+        }
 
-    .chevron {
-        width: var(--chevron-width, 40px);
-        height: var(--chevron-height, 40px);
-        background: var(--chevron-background, transparent);
-        pointer-events: var(--chevron-pointer-events, none);
-        color: var(--chevron-color, var(--icons-color));
-        border: var(--chevron-border, 0 0 0 1px solid #d8dbdf);
-        flex-shrink: 0;
-    }
+        .clear-select:focus {
+            outline: var(--clear-select-focus-outline, 1px solid #006fe8);
+        }
 
-    .multi {
-        padding: var(--multi-select-padding, var(--internal-padding));
-    }
+        .loading {
+            width: var(--loading-width, 40px);
+            height: var(--loading-height);
+            color: var(--loading-color, var(--icons-color));
+            margin: var(--loading--margin, 0);
+            flex-shrink: 0;
+        }
 
-    .multi input {
-        padding: var(--multi-select-input-padding, 0);
-        position: relative;
-        margin: var(--multi-select-input-margin, 5px 0);
-        flex: 1 1 40px;
-    }
+        .chevron {
+            width: var(--chevron-width, 40px);
+            height: var(--chevron-height, 40px);
+            background: var(--chevron-background, transparent);
+            pointer-events: var(--chevron-pointer-events, none);
+            color: var(--chevron-color, var(--icons-color));
+            border: var(--chevron-border, 0 0 0 1px solid #d8dbdf);
+            flex-shrink: 0;
+        }
 
-    .svelte-select.error {
-        border: var(--error-border, 1px solid #ff2d55);
-        background: var(--error-background, #fff);
-    }
+        &.multi {
+            padding: var(--multi-select-padding, var(--internal-padding));
+        }
 
-    .a11y-text {
-        z-index: 9999;
-        border: 0px;
-        clip: rect(1px, 1px, 1px, 1px);
-        height: 1px;
-        width: 1px;
-        position: absolute;
-        overflow: hidden;
-        padding: 0px;
-        white-space: nowrap;
-    }
+        &.multi input {
+            padding: var(--multi-select-input-padding, 0);
+            position: relative;
+            margin: var(--multi-select-input-margin, 5px 0);
+            flex: 1 1 40px;
+        }
 
-    .multi-item {
-        background: var(--multi-item-bg, #ebedef);
-        margin: var(--multi-item-margin, 0);
-        outline: var(--multi-item-outline, 1px solid #ddd);
-        border-radius: var(--multi-item-border-radius, 4px);
-        height: var(--multi-item-height, 25px);
-        line-height: var(--multi-item-height, 25px);
-        display: flex;
-        cursor: default;
-        padding: var(--multi-item-padding, 0 5px);
-        overflow: hidden;
-        gap: var(--multi-item-gap, 4px);
-        outline-offset: -1px;
-        max-width: var(--multi-max-width, none);
-        color: var(--multi-item-color, var(--item-color));
-    }
+        .svelte-select.error {
+            border: var(--error-border, 1px solid #ff2d55);
+            background: var(--error-background, #ffffff);
+        }
 
-    .multi-item.disabled:hover {
-        background: var(--multi-item-disabled-hover-bg, #ebedef);
-        color: var(--multi-item-disabled-hover-color, #c1c6cc);
-    }
+        .a11y-text {
+            z-index: 9999;
+            border: 0px;
+            clip: rect(1px, 1px, 1px, 1px);
+            height: 1px;
+            width: 1px;
+            position: absolute;
+            overflow: hidden;
+            padding: 0px;
+            white-space: nowrap;
+        }
 
-    .multi-item-text {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+        .multi-item {
+            background: var(--multi-item-bg, #ebedef);
+            margin: var(--multi-item-margin, 0);
+            outline: var(--multi-item-outline, 1px solid #dddddd);
+            border-radius: var(--multi-item-border-radius, 4px);
+            height: var(--multi-item-height, 25px);
+            line-height: var(--multi-item-height, 25px);
+            display: flex;
+            cursor: default;
+            padding: var(--multi-item-padding, 0 5px);
+            overflow: hidden;
+            gap: var(--multi-item-gap, 4px);
+            outline-offset: -1px;
+            max-width: var(--multi-max-width, none);
+            color: var(--multi-item-color, var(--item-color));
+        }
 
-    .multi-item-clear {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        --clear-icon-color: var(--multi-item-clear-icon-color, #000);
-    }
+        .multi-item.disabled:hover {
+            background: var(--multi-item-disabled-hover-bg, #ebedef);
+            color: var(--multi-item-disabled-hover-color, #c1c6cc);
+        }
 
-    .multi-item.active {
-        outline: var(--multi-item-active-outline, 1px solid #006fe8);
-    }
+        .multi-item-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-    .svelte-select-list {
-        box-shadow: var(--list-shadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));
-        border-radius: var(--list-border-radius, 4px);
-        max-height: var(--list-max-height, 252px);
-        overflow-y: auto;
-        background: var(--list-background, #fff);
-        position: var(--list-position, absolute);
-        z-index: var(--list-z-index, 2);
-        border: var(--list-border);
-    }
+        .multi-item-clear {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            --clear-icon-color: var(--multi-item-clear-icon-color, #000000);
+        }
 
-    .prefloat {
-        opacity: 0;
-        pointer-events: none;
-    }
+        .multi-item.active {
+            outline: var(--multi-item-active-outline, 1px solid #006fe8);
+        }
 
-    .list-group-title {
-        color: var(--group-title-color, #8f8f8f);
-        cursor: default;
-        font-size: var(--group-title-font-size, 16px);
-        font-weight: var(--group-title-font-weight, 600);
-        height: var(--height, 42px);
-        line-height: var(--height, 42px);
-        padding: var(--group-title-padding, 0 20px);
-        text-overflow: ellipsis;
-        overflow-x: hidden;
-        white-space: nowrap;
-        text-transform: var(--group-title-text-transform, uppercase);
-        border-width: var(--group-title-border-width, medium);
-        border-style: var(--group-title-border-style, none);
-        border-color: var(--group-title-border-color, color);
-    }
+        .svelte-select-list {
+            box-shadow: var(--list-shadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));
+            border-radius: var(--list-border-radius, 4px);
+            max-height: var(--list-max-height, 252px);
+            overflow-y: auto;
+            background: var(--list-background, #ffffff);
+            position: var(--list-position, absolute);
+            z-index: var(--list-z-index, 2);
+            border: var(--list-border);
+        }
 
-    .empty {
-        text-align: var(--list-empty-text-align, center);
-        padding: var(--list-empty-padding, 20px 0);
-        color: var(--list-empty-color, #78848f);
-    }
+        .prefloat {
+            opacity: 0;
+            pointer-events: none;
+        }
 
-    .item {
-        cursor: default;
-        height: var(--item-height, var(--height, 42px));
-        line-height: var(--item-line-height, var(--height, 42px));
-        padding: var(--item-padding, 0 20px);
-        color: var(--item-color, inherit);
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        transition: var(--item-transition, all 0.2s);
-        align-items: center;
-        width: 100%;
-    }
+        .list-group-title {
+            color: var(--group-title-color, #8f8f8f);
+            cursor: default;
+            font-size: var(--group-title-font-size, 16px);
+            font-weight: var(--group-title-font-weight, 600);
+            height: var(--height, 42px);
+            line-height: var(--height, 42px);
+            padding: var(--group-title-padding, 0 20px);
+            text-overflow: ellipsis;
+            overflow-x: hidden;
+            white-space: nowrap;
+            text-transform: var(--group-title-text-transform, uppercase);
+            border-width: var(--group-title-border-width, medium);
+            border-style: var(--group-title-border-style, none);
+            border-color: var(--group-title-border-color, color);
+        }
 
-    .item.group-item {
-        padding-left: var(--group-item-padding-left, 40px);
-    }
+        .empty {
+            text-align: var(--list-empty-text-align, center);
+            padding: var(--list-empty-padding, 20px 0);
+            color: var(--list-empty-color, #78848f);
+        }
 
-    .item:active {
-        background: var(--item-active-background, #b9daff);
-    }
+        .item {
+            cursor: default;
+            height: var(--item-height, var(--height, 42px));
+            line-height: var(--item-line-height, var(--height, 42px));
+            padding: var(--item-padding, 0 20px);
+            color: var(--item-color, inherit);
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: var(--item-transition, all 0.2s);
+            align-items: center;
+            width: 100%;
+        }
 
-    .item.active {
-        background: var(--item-is-active-bg, #007aff);
-        color: var(--item-is-active-color, #fff);
-    }
+        .item.group-item {
+            padding-left: var(--group-item-padding-left, 40px);
+        }
 
-    .item.first {
-        border-radius: var(--item-first-border-radius, 4px 4px 0 0);
-    }
+        .item:active {
+            background: var(--item-active-background, #b9daff);
+        }
 
-    .item.hover:not(.active) {
-        background: var(--item-hover-bg, #e7f2ff);
-        color: var(--item-hover-color, inherit);
-    }
+        .item.active {
+            background: var(--item-is-active-bg, #007aff);
+            color: var(--item-is-active-color, #ffffff);
+        }
 
-    .item.not-selectable,
-    .item.hover.item.not-selectable,
-    .item.active.item.not-selectable,
-    .item.not-selectable:active {
-        color: var(--item-is-not-selectable-color, #999);
-        background: transparent;
-    }
+        .item.first {
+            border-radius: var(--item-first-border-radius, 4px 4px 0 0);
+        }
 
-    .required {
-        opacity: 0;
-        z-index: -1;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
+        .item.hover:not(.active) {
+            background: var(--item-hover-bg, #e7f2ff);
+            color: var(--item-hover-color, inherit);
+        }
+
+        .item.not-selectable,
+        .item.hover.item.not-selectable,
+        .item.active.item.not-selectable,
+        .item.not-selectable:active {
+            color: var(--item-is-not-selectable-color, #999999);
+            background: transparent;
+        }
+
+        .required {
+            opacity: 0;
+            z-index: -1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
     }
 </style>
