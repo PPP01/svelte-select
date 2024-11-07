@@ -41,6 +41,7 @@
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-svelte": "^7.2.2",
+    "sass-embedded": "^1.80.6",
     "sirv-cli": "^3.0.0",
     "svelte": "^4.0.0",
     "svelte-highlight": "^7.7.0",
