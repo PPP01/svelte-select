@@ -501,7 +501,7 @@
 
         // allow users to override our handler
         if (!dispatch("keydown", e, { cancelable: true })) {
-          return;
+            return;
         }
 
         switch (e.key) {
