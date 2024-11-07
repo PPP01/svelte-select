@@ -9,7 +9,3 @@
 </script>
 
 <Select {items} showChevron />
-
-<style>
-
-</style>
