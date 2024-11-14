@@ -217,7 +217,11 @@
                 label: value,
             };
         } else if (multiple && Array.isArray(value) && value.length > 0) {
-            value = value.map((item) => (typeof item === 'string' ? { value: item, label: item } : item));
+            //value = value.map((item) => (typeof item === 'string' ? { value: item, label: item } : item));
+            const temp = value.map((item) => (typeof item === 'string' ? { value: item, label: item } : item));
+            if (JSON.stringify(temp) !== JSON.stringify(value)) {
+                value = temp;
+            }
         }
     }
 
